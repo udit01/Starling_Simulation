@@ -33,15 +33,15 @@
 
 \begin{center}
 \LARGE{\textbf{Indian Institute of Technology, Delhi}}\\
-\vspace{1cm}
+\vspace{0.8cm}
 \large{\textbf{Design Practices in Computer Science}}\\[5pt]
 \large{\textbf{COP290}}\\[5pt]
-\large{\textbf{Mathematical Model}}\\[5pt]
+% \large{\textbf{Mathematical Model}}\\[5pt]
 %by \\
 \vspace{0.5cm}
 
-\large{\textbf{Design and Implement a Software }}
-\large{\textbf{\\for Engineering Drawing}}\\[5pt]
+\large{\textbf{Starling Simulation }}
+% \large{\textbf{\\to understand the Flocking behaviour of birds}}\\[5pt]
 
 
 %\vspace{1in}
@@ -51,13 +51,12 @@
 \end{center}
 \vspace{0.2cm}
 
-\textbf{January 18, 2018} \\
+\textbf{April 18, 2018} \\
 \textbf{Department of Computer Science and Engineering} \\
-%\textbf{Indian Institute of Technology, Delhi}\\
-%\textbf{16 January 2018}
+\textbf{Indian Institute of Technology, Delhi}\\
 
 
-\vspace{2cm}
+\vspace{1.5cm}
 
 
 \begin{multicols*}{2}
@@ -97,29 +96,46 @@
 \end{center}
 \vspace{0.2in}
 
-We are going to design and implement a Software Package for Engineering drawing that shall be described and portrayed in a series of five steps to finely work out the design, analysis and the modelling.
+We are going to design and implement a Starling Simulation that will help us understand the Flocking behaviour of birds. Computer Science term for this simulation is Boids.
 \\
 \vspace{0.3cm}
-The package will have the following functionalities:
+The simulation software will have the following functionalities:
 
 \begin{enumerate}
   \item
-  We will be able to interactively input or read from a file either
+  We will be able to interactively input or read from a file :
   \begin{itemize}
     \item
-    An isometric drawing and a 3D object model 
+    Degree of Seperation, Cohesion, Alignment.  
     \item
-    Projections onto any cross section
+    Speed of boids .
   \end{itemize}
   \item
-  For a given 3D model description, the software will be able to \textit{generate projections} onto any cutting plane or any cross section
+  We can interactively add / remove \textit{ boids and obstacles } based on combination of inputs from keyboard and mouse. 
   \item
-  Given two or more projections, we will be able to interactively \textit{reconstruct the 3D model} of the object and produce the isometric view along any view direction
-
+  Get the color of boids based by grouping on speed, flock, direction .
+  \item
+  Calcuate and display average Velocity and Accleration vector of boid groups and global flock dynamically.
+  \item
+  Calcuate and display average Kinetic Energy of boid groups and global flock dynamically.
 \end{enumerate}
 
+
 \vspace{0.5cm}
-In this design project, we shall work as developers and algorithm enthusiasts to understand the ways and finding different means to approach and tackle the objectives in a more well defined mathematical way. The solutions shall be presented not completely on how the human brain formulates or understands/interprets a given figure, be it 2D or 3D but in a way, that shall work out in all the cases we deal with in real life and definitely be understandable by the machine. Mathematical explanations that are more amenable to intuition are given.
+Future scope of the problem may include:
+
+\begin{enumerate}
+  \item
+  Interactively control the Gravity vector and see it's effect on the flock .
+  \item
+  Adding and measuring the effect of Wind speed / direction and Drag on the flock .
+\end{enumerate}
+
+
+\vspace{0.5cm}
+
+
+In this design project, we shall work as observers, developers and algorithm enthusiasts to understand the ways and finding different means to approach and tackle the objectives in a more well defined mathematical way. 
 
 \vspace{0.2cm}
 We shall work with full confidence and zeal to achieve the goal or reach to quite an end of the problem so that using our lemmas, proofs and knowledge, someday a perfect model can be implemented using a software by some other Computer Explorer. As a matter of interest, we just wish to argue that these things can be computed by our brain so we do hope to find a solution to this problem using machine learning algorithms. Since, Machine Learning algorithms are more or less based on Mathematical matrices, with the use of computer graphics, we expect to find a start with matrices that we have dealt with further in this report. 
