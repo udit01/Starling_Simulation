@@ -53,6 +53,8 @@ class Boid {
     cohese.mult(1);
     if (!option_cohese) cohese.mult(0);
     
+    
+    
     stroke(0, 255, 160);
 
     move.add(allign);
@@ -186,7 +188,10 @@ class Boid {
     for ( int i = 0; i < friends.size(); i++) {
       Boid f = friends.get(i);
       stroke(90);
-      //line(this.pos.x, this.pos.y, f.pos.x, f.pos.y);
+      if(!option_lines)
+      {
+        line(this.pos.x, this.pos.y, f.pos.x, f.pos.y);
+      }
     }
     noStroke();
     fill(shade, 90, 200);
