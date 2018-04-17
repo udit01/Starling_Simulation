@@ -3,6 +3,7 @@ import java.awt.event.KeyEvent;
 
 ArrayList<Boid> boids;
 ArrayList<Avoid> avoids;
+Boid currentSelected = new Boid(0.0,0.0);
 
 float globalScale = .8;
 float eraseRadius = 30;
@@ -11,7 +12,7 @@ String tool = "boids";
 // boid control
 float maxSpeed = 2.1 * globalScale;;
 float friendRadius;
-float crowdRadius = friendRadius / 1.3;
+float crowdRadius = 20 + friendRadius / 1.3;
 float avoidRadius;
 float coheseRadius = friendRadius;
 
@@ -189,6 +190,31 @@ void separation(boolean direction)
   }
 }
 
+void display(Boid Starling) 
+{
+  Boid currentStarling = Starling;
+  float averageSpeed = 0.0;
+  double directionY = 1.0;
+  double directionX = 1.0;
+  double direction = 0.0;
+  
+  for(Boid starling: currentStarling.friends)
+  {
+    averageSpeed += pow(pow(starling.move.x,2) + pow(starling.move.x,2) , 0.5);
+    directionX += starling.move.x;
+    directionY += starling.move.y;
+  }
+  
+  averageSpeed /= currentStarling.friends.size();
+  direction = Math.atan(directionY/directionX);
+  
+  message("Average Speed of Flock: " + averageSpeed);
+  message("Average Kinetic Energy of Flock: " + 0.5 * 0.075 * averageSpeed);
+  message("Direction of Flock: " + direction * 180/PI);
+  message("Speed: " + pow(pow(currentStarling.move.x,2) + pow(currentStarling.move.x,2) , 0.5));
+  message("Kinetic Energy: " + 0.5 * 0.075 * pow(pow(currentStarling.move.x,2) + pow(currentStarling.move.x,2) , 0.5));
+}
+
 void draw () 
 {
   noStroke();
@@ -279,7 +305,11 @@ void keyPressed () {
     message("Randomized the Starlings");
     randomize();
   }
-  
+  else if(key == 's' || key == 'S')
+  {
+    tool = "select";
+    message("Select Mode");
+  }
   else if(key == 'z' || key == 'Z')
   {
     avoids = new ArrayList<Avoid>();
@@ -368,7 +398,7 @@ void drawGUI() {
    if(messageTimer > 0) {
      fill((min(30, messageTimer) / 30.0) * 255.0);
 
-    text(messageText, 10, height - 20); 
+    text(messageText, width - 300, 50); 
    }
 }
 
@@ -390,6 +420,18 @@ void mousePressed () {
     boolean capsLocked = Toolkit.getDefaultToolkit().getLockingKeyState(KeyEvent.VK_CAPS_LOCK);
     avoids.add(new Avoid(mouseX, mouseY, capsLocked, 1.8));
     break;
+  case "select":
+    for(Boid starling: boids)
+    {
+      if(starling.pos.x - mouseX < 2 && starling.pos.y - mouseY < 2)
+      {
+        currentSelected.select = false;
+        currentSelected = starling;
+        starling.select = true;
+        display(starling);
+        break;
+      }
+    }
   }
 }
 

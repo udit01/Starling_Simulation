@@ -2,8 +2,11 @@ class Boid {
   // main fields
   PVector pos;
   PVector move;
-  float shade;
+  float colorx;
+  float colory;
+  float colorz;
   ArrayList<Boid> friends;
+  boolean select = false;
 
   // timers
   int thinkTimer = 0;
@@ -15,7 +18,9 @@ class Boid {
     pos.x = xx;
     pos.y = yy;
     thinkTimer = int(random(10));
-    shade = random(255);
+    colorx = random(255);
+    colory = random(255);
+    colorz = random(255);
     friends = new ArrayList<Boid>();
   }
 
@@ -35,7 +40,7 @@ class Boid {
     PVector allign = getAverageDir();
     PVector avoidDir = getAvoidDir(); 
     PVector avoidObjects = getAvoidAvoids();
-    PVector noise = new PVector(random(2) - 1, random(2) -1);
+    PVector noise = new PVector((random(2) - 1)/2, (random(2) -1)/2);
     PVector cohese = getCohesion();
 
     allign.mult(1);
@@ -65,9 +70,14 @@ class Boid {
 
     move.limit(maxSpeed);
     
-    shade += getAverageColor() * 0.03;
-    shade += (random(2) - 1) ;
-    shade = (shade + 255) % 255; //max(0, min(255, shade));
+    colorx += getAverageColorX() * 0.02;
+    colorx = (colorx + 255) % 255;
+    
+    colory += getAverageColorY() * 0.02;
+    colory = (colory + 255) % 255; 
+    
+    colorz += getAverageColorZ() * 0.02;
+    colorz = (colorz + 255) % 255; 
   }
 
   void getFriends () {
@@ -83,16 +93,71 @@ class Boid {
     friends = nearby;
   }
 
-  float getAverageColor () {
+  float getAverageColorX () {
     float total = 0;
     float count = 0;
-    for (Boid other : friends) {
-      if (other.shade - shade < -128) {
-        total += other.shade + 255 - shade;
-      } else if (other.shade - shade > 128) {
-        total += other.shade - 255 - shade;
-      } else {
-        total += other.shade - shade; 
+    
+    for (Boid other : friends) 
+    {
+      if (other.colorx - colorx < -128) 
+      {
+        total += other.colorx + 255 - colorx;
+      } 
+      else if (other.colorx - colorx > 128) 
+      {
+        total += other.colorx - 255 - colorx;
+      } 
+      else 
+      {
+        total += other.colorx - colorx; 
+      }
+      count++;
+    }
+    if (count == 0) return 0;
+    return total / (float) count;
+  }
+  
+  float getAverageColorY () {
+    float total = 0;
+    float count = 0;
+    
+    for (Boid other : friends) 
+    {
+      if (other.colory - colory < -128) 
+      {
+        total += other.colory + 255 - colory;
+      } 
+      else if (other.colory - colory > 128) 
+      {
+        total += other.colory - 255 - colory;
+      } 
+      else 
+      {
+        total += other.colory - colory; 
+      }
+      count++;
+    }
+    if (count == 0) return 0;
+    return total / (float) count;
+  }
+  
+  float getAverageColorZ () {
+    float total = 0;
+    float count = 0;
+    
+    for (Boid other : friends) 
+    {
+      if (other.colorz - colorz < -128) 
+      {
+        total += other.colorz + 255 - colorz;
+      } 
+      else if (other.colorz - colorz > 128) 
+      {
+        total += other.colorz - 255 - colorz;
+      } 
+      else 
+      {
+        total += other.colorz - colorz; 
       }
       count++;
     }
@@ -100,91 +165,85 @@ class Boid {
     return total / (float) count;
   }
 
-  PVector getAverageDir () {
+  PVector getAverageDir () 
+  {
     PVector sum = new PVector(0, 0);
-    int count = 0;
 
-    for (Boid other : friends) {
+    for (Boid other : friends) 
+    {
       float d = PVector.dist(pos, other.pos);
-      // If the distance is greater than 0 and less than an arbitrary amount (0 when you are yourself)
-      if ((d > 0) && (d < friendRadius)) {
+      if ((d > 0) && (d < friendRadius)) 
+      {
         PVector copy = other.move.copy();
         copy.normalize();
         copy.div(d); 
         sum.add(copy);
-        count++;
-      }
-      if (count > 0) {
-        //sum.div((float)count);
       }
     }
     return sum;
   }
 
-  PVector getAvoidDir() {
+  PVector getAvoidDir() 
+  {
     PVector steer = new PVector(0, 0);
-    int count = 0;
 
-    for (Boid other : friends) {
+    for (Boid other : friends) 
+    {
       float d = PVector.dist(pos, other.pos);
-      // If the distance is greater than 0 and less than an arbitrary amount (0 when you are yourself)
-      if ((d > 0) && (d < crowdRadius)) {
-        // Calculate vector pointing away from neighbor
+      if ((d > 0) && (d < crowdRadius)) 
+      {
         PVector diff = PVector.sub(pos, other.pos);
         diff.normalize();
-        diff.div(d);        // Weight by distance
+        diff.div(d);
         steer.add(diff);
-        count++;            // Keep track of how many
       }
-    }
-    if (count > 0) {
-      //steer.div((float) count);
     }
     return steer;
   }
 
-  PVector getAvoidAvoids() {
+  PVector getAvoidAvoids() 
+  {
     PVector steer = new PVector(0, 0);
-    int count = 0;
-
-    for (Avoid other : avoids) {
+    for (Avoid other : avoids) 
+    {
       float d = PVector.dist(pos, other.position);
-      // If the distance is greater than 0 and less than an arbitrary amount (0 when you are yourself)
-      if ((d > 0) && (d < avoidRadius)) {
-        // Calculate vector pointing away from neighbor
+      if ((d > 0) && (d < avoidRadius)) 
+      {
         PVector diff = PVector.sub(pos, other.position);
         diff.normalize();
-        diff.div(d);        // Weight by distance
+        diff.div(d);       
         steer.add(diff);
-        count++;            // Keep track of how many
       }
     }
     return steer;
   }
   
   PVector getCohesion () {
-   float neighbordist = 50;
-    PVector sum = new PVector(0, 0);   // Start with empty vector to accumulate all locations
+    PVector sum = new PVector(0, 0);   
     int count = 0;
-    for (Boid other : friends) {
+    for (Boid other : friends) 
+    {
       float d = PVector.dist(pos, other.pos);
-      if ((d > 0) && (d < coheseRadius)) {
-        sum.add(other.pos); // Add location
+      if ((d > 0) && (d < coheseRadius)) 
+      {
+        sum.add(other.pos); 
         count++;
       }
     }
-    if (count > 0) {
+    if (count > 0) 
+    {
       sum.div(count);
-      
       PVector desired = PVector.sub(sum, pos);  
       return desired.setMag(0.05);
     } 
-    else {
+    else 
+    {
       return new PVector(0, 0);
     }
   }
 
   void draw () {
+    int size = 1;
     for ( int i = 0; i < friends.size(); i++) {
       Boid f = friends.get(i);
       stroke(90);
@@ -193,32 +252,47 @@ class Boid {
         line(this.pos.x, this.pos.y, f.pos.x, f.pos.y);
       }
     }
+    if(select)
+    {
+      size = 2;
+    }
+    else
+    {
+      size = 1;
+    }
     noStroke();
-    fill(shade, 90, 200);
+    fill(colorx, colory, colorz);
     pushMatrix();
     translate(pos.x, pos.y);
     rotate(move.heading());
     beginShape();
-    vertex(18.75 * globalScale, 0);                           // A
-    vertex(15 * globalScale, 3 * globalScale);                // B
-    vertex(6 * globalScale, 3 * globalScale);                 // E
-    vertex(2.25 * globalScale, 12 * globalScale);             // F  
-    vertex(-7.5 * globalScale, 13.5 * globalScale);           // G
-    vertex(-1.125 * globalScale, 10.5 * globalScale);         // O
-    vertex(1.5 * globalScale, 3 * globalScale);               // I
-    vertex(-6 * globalScale, 3 * globalScale);                // J
-    vertex(-16.5 * globalScale, 7.5 * globalScale);           // N      
-    vertex(-9.375 * globalScale, 0);                          // M
-    vertex(-16.5 * globalScale, -7.5 * globalScale);          // L
-    vertex(-6 * globalScale, -3 * globalScale);               // K
-    vertex(1.5 * globalScale, -3 * globalScale);              // H
-    vertex(-1.125 * globalScale, -10.5 * globalScale);        // R 
-    vertex(-7.5 * globalScale, -13.5 * globalScale);          // Q
-    vertex(2.25 * globalScale, -12 * globalScale);            // P
-    vertex(6 * globalScale, -3 * globalScale);                // D
-    vertex(15 * globalScale, -3 * globalScale);           // C 
+    vertex(18.75 * globalScale * size, 0 * size);                           // A
+    vertex(15 * globalScale * size, 3 * globalScale * size);                // B
+    vertex(6 * globalScale * size, 3 * globalScale * size);                 // E
+    vertex(2.25 * globalScale * size, 12 * globalScale * size);             // F  
+    vertex(-7.5 * globalScale * size, 13.5 * globalScale * size);           // G
+    vertex(-1.125 * globalScale * size, 10.5 * globalScale * size);         // O
+    vertex(1.5 * globalScale * size, 3 * globalScale * size);               // I
+    vertex(-6 * globalScale * size, 3 * globalScale * size);                // J
+    vertex(-16.5 * globalScale * size, 7.5 * globalScale * size);           // N      
+    vertex(-9.375 * globalScale * size, 0 * size);                          // M
+    vertex(-16.5 * globalScale * size, -7.5 * globalScale * size);          // L
+    vertex(-6 * globalScale * size, -3 * globalScale * size);               // K
+    vertex(1.5 * globalScale * size, -3 * globalScale * size);              // H
+    vertex(-1.125 * globalScale * size, -10.5 * globalScale * size);        // R 
+    vertex(-7.5 * globalScale * size, -13.5 * globalScale * size);          // Q
+    vertex(2.25 * globalScale * size, -12 * globalScale * size);            // P
+    vertex(6 * globalScale * size, -3 * globalScale * size);                // D
+    vertex(15 * globalScale * size, -3 * globalScale * size);               // C 
     endShape(CLOSE);
     popMatrix();
+  }
+
+  void mouseOver() 
+  {
+
+    background(50,80,140);
+
   }
 
   // update all those timers!
