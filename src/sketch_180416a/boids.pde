@@ -1,3 +1,6 @@
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+
 Boid barry;
 ArrayList<Boid> boids;
 ArrayList<Avoid> avoids;
@@ -48,7 +51,7 @@ void recalculateConstants () {
   maxSpeed = 2.1 * globalScale;
   friendRadius = 60 * globalScale;
   crowdRadius = (friendRadius / 1.3);
-  avoidRadius = 90 * globalScale;
+  avoidRadius = 150 * globalScale;
   coheseRadius = friendRadius;
 }
 
@@ -56,15 +59,15 @@ void recalculateConstants () {
 void setupWalls() 
 {
   avoids = new ArrayList<Avoid>();
-  for (int x = 20; x < width; x+= 20) 
+  for (int x = 40; x < width - 20; x+= 20) 
   {
-    avoids.add(new Avoid(x, 10));
-    avoids.add(new Avoid(x, height - 10));
+    avoids.add(new Avoid(x, 20, true));
+    avoids.add(new Avoid(x, height - 40, true));
   }
-  for (int x = 20; x < height; x+= 20) 
+  for (int x = 20; x < height -20 ; x+= 20) 
   {
-    avoids.add(new Avoid(10, x));
-    avoids.add(new Avoid(width - 10, x));
+    avoids.add(new Avoid(20, x, true));
+    avoids.add(new Avoid(width - 40, x, true));
   }
 }
 
@@ -74,27 +77,27 @@ void setupCircle()
   for(int x = 0; x < 80; x+= 1) 
   {
     float dir = (x / 80.0) * TWO_PI;
-    avoids.add(new Avoid(width * 0.5 + cos(dir) * height*.48, height * 0.5 + sin(dir)*height*.48));
+    avoids.add(new Avoid(width * 0.5 + cos(dir) * height*.48, height * 0.5 + sin(dir)*height*.48, true));
   } 
   for(int x = 0; x < 64; x+= 1) 
   {
     float dir = (x / 64.0) * TWO_PI;
-    avoids.add(new Avoid(width * 0.5 + cos(dir) * height*.32, height * 0.5 + sin(dir)*height*.32));
+    avoids.add(new Avoid(width * 0.5 + cos(dir) * height*.32, height * 0.5 + sin(dir)*height*.32, true));
   } 
   for(int x = 0; x < 32; x+= 1) 
   {
     float dir = (x / 32.0) * TWO_PI;
-    avoids.add(new Avoid(width * 0.5 + cos(dir) * height*.16, height * 0.5 + sin(dir)*height*.16));
+    avoids.add(new Avoid(width * 0.5 + cos(dir) * height*.16, height * 0.5 + sin(dir)*height*.16, true));
   } 
   for(int x = 0; x < 16; x+= 1) 
   {
     float dir = (x / 16.0) * TWO_PI;
-    avoids.add(new Avoid(width * 0.5 + cos(dir) * height*.08, height * 0.5 + sin(dir)*height*.08));
+    avoids.add(new Avoid(width * 0.5 + cos(dir) * height*.08, height * 0.5 + sin(dir)*height*.08, true));
   } 
   for(int x = 0; x < 8; x+= 1) 
   {
     float dir = (x / 8.0) * TWO_PI;
-    avoids.add(new Avoid(width * 0.5 + cos(dir) * height*.04, height * 0.5 + sin(dir)*height*.04));
+    avoids.add(new Avoid(width * 0.5 + cos(dir) * height*.04, height * 0.5 + sin(dir)*height*.04, true));
   } 
 }
 
@@ -104,21 +107,21 @@ void setupCourse()
   for(int x = 12; x < 60; x+= 1) 
   {
     float dir = (x / 72.0) * TWO_PI;
-    avoids.add(new Avoid(width * 0.25 + cos(dir) * height*.3, height * 0.5 + sin(dir)*height*.3));
+    avoids.add(new Avoid(width * 0.25 + cos(dir) * height*.3, height * 0.5 + sin(dir)*height*.3, true));
   } 
   for(int x = 0; x < 50; x+= 1) 
   {
     float dir = (x / 50.0) * TWO_PI;
-    avoids.add(new Avoid(width * 0.5 + cos(dir) * height*.29, height * 0.5 + sin(dir)*height*.29));
+    avoids.add(new Avoid(width * 0.5 + cos(dir) * height*.29, height * 0.5 + sin(dir)*height*.29, true));
   }
   for (int x = height/5 ; x < height * 0.8; x+= 25) 
   {
-    avoids.add(new Avoid(width*0.73, x));
+    avoids.add(new Avoid(width*0.73, x, true));
   }
   for(int x = 33; x < 68; x+= 1) 
   {
     float dir = (x / 50.0) * TWO_PI;
-    avoids.add(new Avoid(width * 0.78 + cos(dir) * height*.18, height * 0.35 + sin(dir)*height*.18));
+    avoids.add(new Avoid(width * 0.78 + cos(dir) * height*.18, height * 0.35 + sin(dir)*height*.18, true));
   }
 }
 
@@ -169,44 +172,70 @@ void draw ()
 }
 
 void keyPressed () {
-  if (key == 'q') {
+  if (key == 'q' || key == 'Q') 
+  {
     tool = "boids";
     message("Add boids");
-  } else if (key == 'w') {
+  } 
+  else if (key == 'w' || key == 'W') 
+  {
     tool = "avoids";
     message("Place obstacles");
-  } else if (key == 'e') {
+  } 
+  else if (key == 'e' || key == 'E') 
+  {
     tool = "erase";
     message("Eraser");
-  } else if (key == '-') {
+  } 
+  else if (key == '-') 
+  {
     message("Decreased scale");
-    globalScale *= 0.9;
-  } else if (key == '=') {
-      message("Increased Scale");
-    globalScale /= 0.9;
-  } else if (key == '1') {
+    globalScale *= 0.95;
+  } 
+  else if (key == '=') 
+  {
+    message("Increased Scale");
+    globalScale /= 0.95;
+  } 
+  else if (key == '1') {
      option_friend = option_friend ? false : true;
      message("Turned friend allignment " + on(option_friend));
-  } else if (key == '2') {
+  } 
+  else if (key == '2') 
+  {
      option_crowd = option_crowd ? false : true;
      message("Turned crowding avoidance " + on(option_crowd));
-  } else if (key == '3') {
+  } 
+  else if (key == '3') 
+  {
      option_avoid = option_avoid ? false : true;
      message("Turned obstacle avoidance " + on(option_avoid));
-  } else if (key == '4') {
+  } 
+  else if (key == '4') 
+  {
      option_cohese = option_cohese ? false : true;
      message("Turned cohesion " + on(option_cohese));
-  } else if (key == '5') {
+  } 
+  else if (key == '5') 
+  {
      option_noise = option_noise ? false : true;
      message("Turned noise " + on(option_noise));
-  } else if (key == '6') {
+  } 
+  else if (key == '6') 
+  {
      option_lines = option_lines ? false : true;
      message("Turned interactions " + on(option_lines));
-  } else if (key == ',') {
+  } 
+  else if (key == ',') 
+  {
      setupWalls(); 
-  } else if (key == '.') {
+  } 
+  else if (key == '.') 
+  {
      setupCircle(); 
-  } else if(key == '/') {
+  } 
+  else if(key == '/') 
+  {
      setupCourse();
   }
   recalculateConstants();
@@ -236,7 +265,8 @@ void mousePressed () {
     message(boids.size() + " Total Boid" + s(boids.size()));
     break;
   case "avoids":
-    avoids.add(new Avoid(mouseX, mouseY));
+    boolean capsLocked = Toolkit.getDefaultToolkit().getLockingKeyState(KeyEvent.VK_CAPS_LOCK);
+    avoids.add(new Avoid(mouseX, mouseY, capsLocked, 1.8));
     break;
   }
 }
@@ -259,7 +289,7 @@ void erase () {
 
   for (int i = avoids.size()-1; i > -1; i--) {
     Avoid j = avoids.get(i);
-    if (abs(j.pos.x - mouseX) < eraseRadius && abs(j.pos.y - mouseY) < eraseRadius) {
+    if (abs(j.position.x - mouseX) < eraseRadius && abs(j.position.y - mouseY) < eraseRadius) {
       avoids.remove(i);
     }
   }

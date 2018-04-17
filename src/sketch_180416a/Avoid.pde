@@ -1,8 +1,20 @@
 class Avoid {
-   PVector pos;
+   PVector position;
+   boolean shape;
+   float size;
    
-   Avoid (float xx, float yy) {
-     pos = new PVector(xx,yy);
+   Avoid (float xx, float yy, boolean zz) 
+   {
+     position = new PVector(xx,yy);
+     shape = zz;
+     size = 1;
+   }
+   
+   Avoid (float xx, float yy, boolean zz, float n)
+   {
+     position = new PVector(xx,yy);
+     shape = zz;
+     size = n;
    }
    
    void go () {
@@ -11,6 +23,13 @@ class Avoid {
    
    void draw () {
      fill(255, 0, 200);
-     ellipse(pos.x, pos.y, 16, 16);
+     if(shape == true)
+     {
+       rect(position.x, position.y, 14 * size, 14 * size, 3 * size);
+     }
+     else
+     {
+       ellipse(position.x, position.y, 14 * size, 14 * size);
+     }
    }
 }
