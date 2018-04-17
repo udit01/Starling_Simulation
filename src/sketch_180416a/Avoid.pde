@@ -10,7 +10,7 @@ class Avoid {
    }
    
    void draw () {
-     fill(0, 255, 200);
-     ellipse(pos.x, pos.y, 15, 15);
+     fill(255, 0, 200);
+     ellipse(pos.x, pos.y, 16, 16);
    }
 }
