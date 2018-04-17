@@ -1,5 +1,6 @@
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
+import javax.swing.JOptionPane;
 
 ArrayList<Boid> boids;
 ArrayList<Avoid> avoids;
@@ -215,6 +216,11 @@ void display()
    direction = Math.atan(directionY/directionX);
 }
 
+void displayHelp()
+{
+  JOptionPane.showMessageDialog(null,"HELP SECTION" + "\n" + "Q: Select Starlings at hand" + "\n" + "w: Select Rectangular Obstacles at Hand" + "\n" + "W: Select Circular Obstacles at Hand" + "\n" + "E: Select Eraser at hand" + "\n" + "R: Randomize the Starlings" + "\n" + "S: Select a Starling in this mode" + "\n" + "Z: Remove all Obstacles" + "\n" + "X: Remove all Starlings" + "\n" + "Up: Blow wind in the upward direction" + "\n" + "Down: Blow wind in the downward direction" + "\n" + "Left: Blow wind in the left direction" + "\n" + "Right: Blow wind in the right direction" + "\n" + "1: Toggle Interactions" + "\n" + "2: Decrease Cohesion Radius" + "\n" + "3: Toggle Obstacle Avoidance" + "\n" + "4: Decrease Separation Radius" + "\n" + "5: Toggle Flock Alignment" + "\n" + "6: Increase Separation Radius" + "\n" + "7: Toggle Noise" + "\n" + "8: Increase Cohesion Radius" + "\n" + "9: Toggle Crowd Avoidance" + ",: Rectangular Walls" + "\n" + ".: Circular Obstacles" + "\n" + "/: COP Wall" + "\n" + "-: Decrease Size of Boids" + "\n" + "=: Increase size of Boids" + "Mouse Wheel: Change Max Speed");
+}
+
 void draw () 
 {
   noStroke();
@@ -310,6 +316,10 @@ void keyPressed () {
     tool = "select";
     message("Select Mode");
   }
+  else if(key == 'h' || key == 'H')
+  {
+    displayHelp();
+  }
   else if(key == 'z' || key == 'Z')
   {
     avoids = new ArrayList<Avoid>();
@@ -402,12 +412,12 @@ void drawGUI() {
    }
    
    display();
-   text("Number of Friends: " + currentSelected.friends.size(), width - 350, 50); 
-   text("Average Speed of Flock: " + averageSpeed, width - 350, 70); 
-   text("Average Kinetic Energy of Flock: " + 0.5 * 0.075 * averageSpeed, width - 350, 90); 
-   text("Direction of Flock: " + direction * 180/PI, width - 350, 110); 
-   text("Speed: " + pow(pow(currentSelected.move.x,2) + pow(currentSelected.move.x,2) , 0.5), width - 350, 130); 
-   text("Kinetic Energy: " + 0.5 * 0.075 * pow(pow(currentSelected.move.x,2) + pow(currentSelected.move.x,2) , 0.5), width - 350, 150); 
+   text("Number of Friends: " + currentSelected.friends.size(), width - 350, 60); 
+   text("Average Speed of Flock: " + averageSpeed, width - 350, 80); 
+   text("Average Kinetic Energy of Flock: " + 0.5 * 0.075 * averageSpeed, width - 350, 100); 
+   text("Direction of Flock: " + direction * 180/PI, width - 350, 120); 
+   text("Speed: " + pow(pow(currentSelected.move.x,2) + pow(currentSelected.move.x,2) , 0.5), width - 350, 140); 
+   text("Kinetic Energy: " + 0.5 * 0.075 * pow(pow(currentSelected.move.x,2) + pow(currentSelected.move.x,2) , 0.5), width - 350, 160); 
 }
 
 String s(int count) {
