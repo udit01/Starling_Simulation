@@ -8,7 +8,7 @@ Boid currentSelected = new Boid(0.0,0.0);
 float globalScale = .8;
 float eraseRadius = 30;
 String tool = "boids";
-float averageSpeed;
+float averageSpeed = 0.0;
 double direction;
 
 // boid control
@@ -192,21 +192,27 @@ void separation(boolean direction)
   }
 }
 
-void display(Boid Starling) 
+void display() 
 {
-  double directionY = 1.0;
-  double directionX = 1.0;
+   averageSpeed = 0.0;
+   
+   double directionY = 0.0;
+   double directionX = 1.0;
   
-  for(Boid starling: Starling.friends)
-  {
-    averageSpeed += pow(pow(starling.move.x,2) + pow(starling.move.x,2) , 0.5);
-    directionX += starling.move.x;
-    directionY += starling.move.y;
-  }
-  
-  averageSpeed /= Starling.friends.size();
-  direction = Math.atan(directionY/directionX);
- 
+   for(int i = 0; i < currentSelected.friends.size(); i++)
+   {
+     Boid j = currentSelected.friends.get(i);
+     averageSpeed += pow(pow(j.move.x,2) + pow(j.move.x,2) , 0.5);
+     directionX += j.move.x;
+     directionY += j.move.y;
+   }
+   
+   averageSpeed += pow(pow(currentSelected.move.x,2) + pow(currentSelected.move.x,2) , 0.5);
+   directionX += currentSelected.move.x;
+   directionY += currentSelected.move.y;
+   
+   averageSpeed /= (currentSelected.friends.size() + 1);
+   direction = Math.atan(directionY/directionX);
 }
 
 void draw () 
@@ -392,16 +398,16 @@ void drawGUI() {
    if(messageTimer > 0) {
      fill((min(30, messageTimer) / 30.0) * 255.0);
 
-     text(messageText, 50, 50); 
+     text(messageText, 40, 50); 
    }
    
-   display(currentSelected);
-   text("Number of Friends: " + currentSelected.friends.size(), width - 300, 50); 
-   text("Average Speed of Flock: " + averageSpeed, width - 300, 70); 
-   text("Average Kinetic Energy of Flock: " + 0.5 * 0.075 * averageSpeed, width - 300, 90); 
-   text("Direction of Flock: " + direction * 180/PI, width - 300, 110); 
-   text("Speed: " + pow(pow(currentSelected.move.x,2) + pow(currentSelected.move.x,2) , 0.5), width - 300, 130); 
-   text("Kinetic Energy: " + 0.5 * 0.075 * pow(pow(currentSelected.move.x,2) + pow(currentSelected.move.x,2) , 0.5), width - 300, 150); 
+   display();
+   text("Number of Friends: " + currentSelected.friends.size(), width - 350, 50); 
+   text("Average Speed of Flock: " + averageSpeed, width - 350, 70); 
+   text("Average Kinetic Energy of Flock: " + 0.5 * 0.075 * averageSpeed, width - 350, 90); 
+   text("Direction of Flock: " + direction * 180/PI, width - 350, 110); 
+   text("Speed: " + pow(pow(currentSelected.move.x,2) + pow(currentSelected.move.x,2) , 0.5), width - 350, 130); 
+   text("Kinetic Energy: " + 0.5 * 0.075 * pow(pow(currentSelected.move.x,2) + pow(currentSelected.move.x,2) , 0.5), width - 350, 150); 
 }
 
 String s(int count) {
@@ -427,6 +433,8 @@ void mousePressed () {
     {
       if(abs(starling.pos.x - mouseX) < 5 && abs(starling.pos.y) - mouseY < 5)
       {
+        averageSpeed = 0.0;
+        direction = 0.0;
         currentSelected.select = false;
         currentSelected = starling;
         currentSelected.select = true;
