@@ -13,6 +13,7 @@ float maxSpeed = 2.1 * globalScale;;
 float friendRadius;
 float crowdRadius = friendRadius / 1.3;
 float avoidRadius;
+float coheseRadius = friendRadius;
 
 boolean option_friend = true;
 boolean option_crowd = true;
@@ -34,10 +35,8 @@ void setup () {
   recalculateConstants();
   boids = new ArrayList<Boid>();
   avoids = new ArrayList<Avoid>();
-  for (int x = 100; x < width - 100; x+= 200) {
-    for (int y = 100; y < height - 100; y+= 200) {
-      boids.add(new Boid(x + random(3), y + random(3)));
-      boids.add(new Boid(x + random(3), y + random(3)));
+  for (int x = 100; x < width - 100; x+= 100) {
+    for (int y = 100; y < height - 100; y+= 100) {
       boids.add(new Boid(x + random(3), y + random(3)));
     }
   }
@@ -46,9 +45,7 @@ void setup () {
 }
 
 void recalculateConstants () {
-  // maxSpeed = 2.1 * globalScale;
   friendRadius = 50 * globalScale;
-  // crowdRadius = (friendRadius / 1.3);
   avoidRadius = 150 * globalScale;
 }
 
@@ -165,6 +162,18 @@ void wind(int n)
       Boid j = boids.get(i);
       j.move.x -= 0.1;
     }
+  }
+}
+
+void cohese(boolean direction)
+{
+  if(direction)
+  {
+    coheseRadius += 10;
+  }
+  else
+  {
+    coheseRadius -= 10;
   }
 }
 
@@ -300,6 +309,8 @@ void keyPressed () {
   } 
   else if(key == '2')
   {
+    separation(false);
+    message("Decreased Cohesion");
   }
   else if(key == '3') 
   {
@@ -327,6 +338,8 @@ void keyPressed () {
   } 
   else if(key == '8')
   {
+    separation(true);
+    message("Increased Cohesion");
   }
   else if(key == '9') 
   {
