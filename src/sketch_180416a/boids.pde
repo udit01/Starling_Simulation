@@ -2,8 +2,8 @@ Boid barry;
 ArrayList<Boid> boids;
 ArrayList<Avoid> avoids;
 
-float globalScale = .91;
-float eraseRadius = 35;
+float globalScale = .8;
+float eraseRadius = 30;
 String tool = "boids";
 
 // boid control
@@ -180,10 +180,10 @@ void keyPressed () {
     message("Eraser");
   } else if (key == '-') {
     message("Decreased scale");
-    globalScale *= 0.8;
+    globalScale *= 0.9;
   } else if (key == '=') {
       message("Increased Scale");
-    globalScale /= 0.8;
+    globalScale /= 0.9;
   } else if (key == '1') {
      option_friend = option_friend ? false : true;
      message("Turned friend allignment " + on(option_friend));
@@ -241,17 +241,25 @@ void mousePressed () {
   }
 }
 
+void mouseWheel(MouseEvent event) {
+  float e = event.getCount();
+  if(maxSpeed > 0.2 * e)
+  {
+    maxSpeed -= 0.2 * e;
+  }
+}
+
 void erase () {
   for (int i = boids.size()-1; i > -1; i--) {
-    Boid b = boids.get(i);
-    if (abs(b.pos.x - mouseX) < eraseRadius && abs(b.pos.y - mouseY) < eraseRadius) {
+    Boid j = boids.get(i);
+    if (abs(j.pos.x - mouseX) < eraseRadius && abs(j.pos.y - mouseY) < eraseRadius) {
       boids.remove(i);
     }
   }
 
   for (int i = avoids.size()-1; i > -1; i--) {
-    Avoid b = avoids.get(i);
-    if (abs(b.pos.x - mouseX) < eraseRadius && abs(b.pos.y - mouseY) < eraseRadius) {
+    Avoid j = avoids.get(i);
+    if (abs(j.pos.x - mouseX) < eraseRadius && abs(j.pos.y - mouseY) < eraseRadius) {
       avoids.remove(i);
     }
   }

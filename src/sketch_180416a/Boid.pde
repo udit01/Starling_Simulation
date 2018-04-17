@@ -199,9 +199,24 @@ class Boid {
     translate(pos.x, pos.y);
     rotate(move.heading());
     beginShape();
-    vertex(15 * globalScale, 0);
-    vertex(-7* globalScale, 7* globalScale);
-    vertex(-7* globalScale, -7* globalScale);
+    vertex(18.75 * globalScale, 0);                           // A
+    vertex(15 * globalScale, 3 * globalScale);                // B
+    vertex(6 * globalScale, 3 * globalScale);                 // E
+    vertex(2.25 * globalScale, 12 * globalScale);             // F  
+    vertex(-7.5 * globalScale, 13.5 * globalScale);           // G
+    vertex(-1.125 * globalScale, 10.5 * globalScale);         // O
+    vertex(1.5 * globalScale, 3 * globalScale);               // I
+    vertex(-6 * globalScale, 3 * globalScale);                // J
+    vertex(-16.5 * globalScale, 7.5 * globalScale);           // N      
+    vertex(-9.375 * globalScale, 0);                          // M
+    vertex(-16.5 * globalScale, -7.5 * globalScale);          // L
+    vertex(-6 * globalScale, -3 * globalScale);               // K
+    vertex(1.5 * globalScale, -3 * globalScale);              // H
+    vertex(-1.125 * globalScale, -10.5 * globalScale);        // R 
+    vertex(-7.5 * globalScale, -13.5 * globalScale);          // Q
+    vertex(2.25 * globalScale, -12 * globalScale);            // P
+    vertex(6 * globalScale, -3 * globalScale);                // D
+    vertex(15 * globalScale, -3 * globalScale);           // C 
     endShape(CLOSE);
     popMatrix();
   }
