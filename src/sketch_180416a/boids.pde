@@ -8,6 +8,8 @@ Boid currentSelected = new Boid(0.0,0.0);
 float globalScale = .8;
 float eraseRadius = 30;
 String tool = "boids";
+float averageSpeed;
+double direction;
 
 // boid control
 float maxSpeed = 2.1 * globalScale;;
@@ -192,27 +194,19 @@ void separation(boolean direction)
 
 void display(Boid Starling) 
 {
-  Boid currentStarling = Starling;
-  float averageSpeed = 0.0;
   double directionY = 1.0;
   double directionX = 1.0;
-  double direction = 0.0;
   
-  for(Boid starling: currentStarling.friends)
+  for(Boid starling: Starling.friends)
   {
     averageSpeed += pow(pow(starling.move.x,2) + pow(starling.move.x,2) , 0.5);
     directionX += starling.move.x;
     directionY += starling.move.y;
   }
   
-  averageSpeed /= currentStarling.friends.size();
+  averageSpeed /= Starling.friends.size();
   direction = Math.atan(directionY/directionX);
-  
-  message("Average Speed of Flock: " + averageSpeed);
-  message("Average Kinetic Energy of Flock: " + 0.5 * 0.075 * averageSpeed);
-  message("Direction of Flock: " + direction * 180/PI);
-  message("Speed: " + pow(pow(currentStarling.move.x,2) + pow(currentStarling.move.x,2) , 0.5));
-  message("Kinetic Energy: " + 0.5 * 0.075 * pow(pow(currentStarling.move.x,2) + pow(currentStarling.move.x,2) , 0.5));
+ 
 }
 
 void draw () 
@@ -398,8 +392,16 @@ void drawGUI() {
    if(messageTimer > 0) {
      fill((min(30, messageTimer) / 30.0) * 255.0);
 
-    text(messageText, width - 300, 50); 
+     text(messageText, 50, 50); 
    }
+   
+   display(currentSelected);
+   text("Number of Friends: " + currentSelected.friends.size(), width - 300, 50); 
+   text("Average Speed of Flock: " + averageSpeed, width - 300, 70); 
+   text("Average Kinetic Energy of Flock: " + 0.5 * 0.075 * averageSpeed, width - 300, 90); 
+   text("Direction of Flock: " + direction * 180/PI, width - 300, 110); 
+   text("Speed: " + pow(pow(currentSelected.move.x,2) + pow(currentSelected.move.x,2) , 0.5), width - 300, 130); 
+   text("Kinetic Energy: " + 0.5 * 0.075 * pow(pow(currentSelected.move.x,2) + pow(currentSelected.move.x,2) , 0.5), width - 300, 150); 
 }
 
 String s(int count) {
@@ -423,12 +425,11 @@ void mousePressed () {
   case "select":
     for(Boid starling: boids)
     {
-      if(starling.pos.x - mouseX < 2 && starling.pos.y - mouseY < 2)
+      if(abs(starling.pos.x - mouseX) < 5 && abs(starling.pos.y) - mouseY < 5)
       {
         currentSelected.select = false;
         currentSelected = starling;
-        starling.select = true;
-        display(starling);
+        currentSelected.select = true;
         break;
       }
     }
