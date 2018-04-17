@@ -11,9 +11,8 @@ String tool = "boids";
 // boid control
 float maxSpeed = 2.1 * globalScale;;
 float friendRadius;
-float crowdRadius;
+float crowdRadius = friendRadius / 1.3;
 float avoidRadius;
-float coheseRadius;
 
 boolean option_friend = true;
 boolean option_crowd = true;
@@ -49,9 +48,8 @@ void setup () {
 void recalculateConstants () {
   // maxSpeed = 2.1 * globalScale;
   friendRadius = 50 * globalScale;
-  crowdRadius = (friendRadius / 1.3);
+  // crowdRadius = (friendRadius / 1.3);
   avoidRadius = 150 * globalScale;
-  coheseRadius = friendRadius;
 }
 
 
@@ -170,6 +168,18 @@ void wind(int n)
   }
 }
 
+void separation(boolean direction)
+{
+  if(direction)
+  {
+    crowdRadius += 10;
+  }
+  else
+  {
+    crowdRadius -= 10;
+  }
+}
+
 void draw () 
 {
   noStroke();
@@ -221,20 +231,25 @@ void keyPressed () {
     if(keyCode == UP)
     {
       wind(0);
+      message("Wind: Upwards");
     }
     else if(keyCode == RIGHT)
     {
       wind(1);
+      message("Wind: Rightwards");
     }
     else if(keyCode == DOWN)
     {
       wind(2);
+      message("Wind: Downwards");
     }
     else if(keyCode == LEFT)
     {
       wind(3);
+      message("Wind: Leftwards");
     }
   }
+  
   else if(key == 'q' || key == 'Q') 
   {
     tool = "boids";
@@ -255,6 +270,18 @@ void keyPressed () {
     message("Randomized the Starlings");
     randomize();
   }
+  
+  else if(key == 'z' || key == 'Z')
+  {
+    avoids = new ArrayList<Avoid>();
+    message("Removed all avoids");
+  }
+  else if(key == 'x' || key == 'X')
+  {
+    boids = new ArrayList<Boid>();
+    message("Removed all Starlings");
+  }
+  
   else if(key == '-') 
   {
     message("Decreased scale");
@@ -265,35 +292,48 @@ void keyPressed () {
     message("Increased Scale");
     globalScale /= 0.95;
   } 
-  else if(key == '1') {
-     option_friend = option_friend ? false : true;
-     message("Turned friend allignment " + on(option_friend));
-  } 
-  else if(key == '2') 
+  
+  else if(key == '1') 
   {
-     option_crowd = option_crowd ? false : true;
-     message("Turned crowding avoidance " + on(option_crowd));
+     option_lines = option_lines ? false : true;
+     message("Turned interactions " + on(option_lines));
   } 
+  else if(key == '2')
+  {
+  }
   else if(key == '3') 
   {
      option_avoid = option_avoid ? false : true;
      message("Turned obstacle avoidance " + on(option_avoid));
   } 
-  else if(key == '4') 
+  else if(key == '4')
   {
-     option_cohese = option_cohese ? false : true;
-     message("Turned cohesion " + on(option_cohese));
+    separation(false);
+    message("Decreased Separation");
+  }
+  else if(key == '5') {
+     option_friend = option_friend ? false : true;
+     message("Turned friend allignment " + on(option_friend));
   } 
-  else if(key == '5') 
+  else if(key == '6')
+  {
+    separation(true);
+    message("Increased Separation");
+  }
+  else if(key == '7') 
   {
      option_noise = option_noise ? false : true;
      message("Turned noise " + on(option_noise));
   } 
-  else if(key == '6') 
+  else if(key == '8')
   {
-     option_lines = option_lines ? false : true;
-     message("Turned interactions " + on(option_lines));
+  }
+  else if(key == '9') 
+  {
+     option_crowd = option_crowd ? false : true;
+     message("Turned crowding avoidance " + on(option_crowd));
   } 
+  
   else if(key == ',') 
   {
      setupWalls(); 
@@ -306,14 +346,7 @@ void keyPressed () {
   {
      setupCourse();
   }
-  else if(key == 'z' || key == 'Z')
-  {
-    avoids = new ArrayList<Avoid>();
-  }
-  else if(key == 'x' || key == 'X')
-  {
-    boids = new ArrayList<Boid>();
-  }
+
   recalculateConstants();
 
 }
