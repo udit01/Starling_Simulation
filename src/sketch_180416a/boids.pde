@@ -31,7 +31,7 @@ int messageTimer = 0;
 String messageText = "";
 
 public void settings() {
-  size(1800, 900);
+  size(1800, 900, P3D);
 }
 
 void setup () {
