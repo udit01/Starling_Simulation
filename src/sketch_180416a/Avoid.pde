@@ -3,17 +3,17 @@ class Avoid {
    boolean shape;
    float size;
    
-   Avoid (float xx, float yy, boolean zz) 
+   Avoid (float xx, float yy, float zz, boolean shaped) 
    {
-     position = new PVector(xx,yy);
-     shape = zz;
+     position = new PVector(xx, yy, zz);
+     shape = shaped;
      size = 1;
    }
    
-   Avoid (float xx, float yy, boolean zz, float n)
+   Avoid (float xx, float yy, float zz, boolean shaped, float n)
    {
-     position = new PVector(xx,yy);
-     shape = zz;
+     position = new PVector(xx, yy, zz);
+     shape = shaped;
      size = n;
    }
    
@@ -22,10 +22,13 @@ class Avoid {
    }
    
    void draw () {
-     fill(255, 0, 200);
      if(shape == true)
      {
-       rect(position.x, position.y, 14 * size, 14 * size, 3 * size);
+       lights();
+       pushMatrix();
+       translate(width/2, height/2, 0);
+       box(15);
+       popMatrix();
      }
      else
      {

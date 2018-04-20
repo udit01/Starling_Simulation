@@ -59,13 +59,13 @@ void setupWalls()
   avoids = new ArrayList<Avoid>();
   for (int x = 40; x < width - 20; x+= 20) 
   {
-    avoids.add(new Avoid(x, 20, true));
-    avoids.add(new Avoid(x, height - 40, true));
+    avoids.add(new Avoid(x, 20, 20, true));
+    avoids.add(new Avoid(x, height - 40, 20, true));
   }
   for (int x = 20; x < height -20 ; x+= 20) 
   {
-    avoids.add(new Avoid(20, x, true));
-    avoids.add(new Avoid(width - 40, x, true));
+    avoids.add(new Avoid(20, x, 20, true));
+    avoids.add(new Avoid(width - 40, x, 20, true));
   }
 }
 
@@ -75,27 +75,27 @@ void setupCircle()
   for(int x = 0; x < 80; x+= 1) 
   {
     float dir = (x / 80.0) * TWO_PI;
-    avoids.add(new Avoid(width * 0.5 + cos(dir) * height*.48, height * 0.5 + sin(dir)*height*.48, true));
+    avoids.add(new Avoid(width * 0.5 + cos(dir) * height*.48, height * 0.5 + sin(dir)*height*.48, 20, true));
   } 
   for(int x = 0; x < 64; x+= 1) 
   {
     float dir = (x / 64.0) * TWO_PI;
-    avoids.add(new Avoid(width * 0.5 + cos(dir) * height*.32, height * 0.5 + sin(dir)*height*.32, true));
+    avoids.add(new Avoid(width * 0.5 + cos(dir) * height*.32, height * 0.5 + sin(dir)*height*.32, 20, true));
   } 
   for(int x = 0; x < 32; x+= 1) 
   {
     float dir = (x / 32.0) * TWO_PI;
-    avoids.add(new Avoid(width * 0.5 + cos(dir) * height*.16, height * 0.5 + sin(dir)*height*.16, true));
+    avoids.add(new Avoid(width * 0.5 + cos(dir) * height*.16, height * 0.5 + sin(dir)*height*.16, 20, true));
   } 
   for(int x = 0; x < 16; x+= 1) 
   {
     float dir = (x / 16.0) * TWO_PI;
-    avoids.add(new Avoid(width * 0.5 + cos(dir) * height*.08, height * 0.5 + sin(dir)*height*.08, true));
+    avoids.add(new Avoid(width * 0.5 + cos(dir) * height*.08, height * 0.5 + sin(dir)*height*.08, 20, true));
   } 
   for(int x = 0; x < 8; x+= 1) 
   {
     float dir = (x / 8.0) * TWO_PI;
-    avoids.add(new Avoid(width * 0.5 + cos(dir) * height*.04, height * 0.5 + sin(dir)*height*.04, true));
+    avoids.add(new Avoid(width * 0.5 + cos(dir) * height*.04, height * 0.5 + sin(dir)*height*.04, 20, true));
   } 
 }
 
@@ -105,21 +105,21 @@ void setupCourse()
   for(int x = 12; x < 60; x+= 1) 
   {
     float dir = (x / 72.0) * TWO_PI;
-    avoids.add(new Avoid(width * 0.25 + cos(dir) * height*.3, height * 0.5 + sin(dir)*height*.3, true));
+    avoids.add(new Avoid(width * 0.25 + cos(dir) * height*.3, height * 0.5 + sin(dir)*height*.3, 20, true));
   } 
   for(int x = 0; x < 50; x+= 1) 
   {
     float dir = (x / 50.0) * TWO_PI;
-    avoids.add(new Avoid(width * 0.5 + cos(dir) * height*.29, height * 0.5 + sin(dir)*height*.29, true));
+    avoids.add(new Avoid(width * 0.5 + cos(dir) * height*.29, height * 0.5 + sin(dir)*height*.29, 20, true));
   }
   for (int x = height/5 ; x < height * 0.8; x+= 25) 
   {
-    avoids.add(new Avoid(width*0.73, x, true));
+    avoids.add(new Avoid(width*0.73, x, 20, true));
   }
   for(int x = 33; x < 68; x+= 1) 
   {
     float dir = (x / 50.0) * TWO_PI;
-    avoids.add(new Avoid(width * 0.78 + cos(dir) * height*.18, height * 0.35 + sin(dir)*height*.18, true));
+    avoids.add(new Avoid(width * 0.78 + cos(dir) * height*.18, height * 0.35 + sin(dir)*height*.18, 20, true));
   }
 }
 
@@ -437,7 +437,7 @@ void mousePressed () {
     break;
   case "avoids":
     boolean capsLocked = Toolkit.getDefaultToolkit().getLockingKeyState(KeyEvent.VK_CAPS_LOCK);
-    avoids.add(new Avoid(mouseX, mouseY, capsLocked, 1.8));
+    avoids.add(new Avoid(mouseX, mouseY, 20, capsLocked, 1.8));
     break;
   case "select":
     for(Boid starling: boids)
