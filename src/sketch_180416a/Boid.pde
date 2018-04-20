@@ -64,7 +64,7 @@ class Boid {
 
     move.add(allign);
     move.add(avoidDir);
-    move.add(avoidObjects);
+    move.add(avoidObjects.mult(sqrt(move.x*move.x + move.y * move.y)));
     move.add(noise);
     move.add(cohese);
 
@@ -270,17 +270,17 @@ class Boid {
     vertex(15 * globalScale * size, 3 * globalScale * size);                // B
     vertex(6 * globalScale * size, 3 * globalScale * size);                 // E
     vertex(2.25 * globalScale * size, 12 * globalScale * size);             // F  
-    vertex(-7.5 * globalScale * size, 13.5 * globalScale * size);           // G
+    vertex(-10 * globalScale * size, 15 * globalScale * size);              // G
     vertex(-1.125 * globalScale * size, 10.5 * globalScale * size);         // O
     vertex(1.5 * globalScale * size, 3 * globalScale * size);               // I
     vertex(-6 * globalScale * size, 3 * globalScale * size);                // J
-    vertex(-16.5 * globalScale * size, 7.5 * globalScale * size);           // N      
+    vertex(-22.5 * globalScale * size, 7.5 * globalScale * size);           // N      
     vertex(-9.375 * globalScale * size, 0 * size);                          // M
-    vertex(-16.5 * globalScale * size, -7.5 * globalScale * size);          // L
+    vertex(-22.5 * globalScale * size, -7.5 * globalScale * size);          // L
     vertex(-6 * globalScale * size, -3 * globalScale * size);               // K
     vertex(1.5 * globalScale * size, -3 * globalScale * size);              // H
     vertex(-1.125 * globalScale * size, -10.5 * globalScale * size);        // R 
-    vertex(-7.5 * globalScale * size, -13.5 * globalScale * size);          // Q
+    vertex(-10 * globalScale * size, -15 * globalScale * size);             // Q
     vertex(2.25 * globalScale * size, -12 * globalScale * size);            // P
     vertex(6 * globalScale * size, -3 * globalScale * size);                // D
     vertex(15 * globalScale * size, -3 * globalScale * size);               // C 
@@ -291,7 +291,7 @@ class Boid {
   void mouseOver() 
   {
 
-    background(50,80,140);
+    background(200,200,200);
 
   }
 
