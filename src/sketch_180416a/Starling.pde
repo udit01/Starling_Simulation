@@ -1,16 +1,24 @@
+/// the starling class defines starlings as objects
 class Starling {
-    // main fields
+    /// vector representing position of the starling in the window 
     PVector position;
+    /// vector representing velocity of the starling in the window 
     PVector velocity;
+    /// float value holding the Red component of the color of the starling
     float colorR;
+    /// float value holding the Green component of the color of the starling
     float colorG;
+    /// float value holding the Blue component of the color of the starling
     float colorB;
+    /// array of starlings that are within a friendly radius of this starling
     ArrayList<Starling> neighbors;
+    /// whether the starling is selected or not to view its details
     boolean select = false;
 
-    // timers
+    /// the thinking timer of the starling -- used in multi-threading  
     int decideTimer = 0;
 
+    /// constructor of the class that takes two arguments i.e. the x-coordinate and y-coordinate of the starling
     Starling (float x, float y) 
     {
       velocity = new PVector(0, 0);
@@ -24,6 +32,7 @@ class Starling {
       neighbors = new ArrayList<Starling>();
     }
 
+    /// just like an update function that runs every frame 
     void go () 
     {
       increment();
@@ -39,6 +48,7 @@ class Starling {
       position.add(velocity);
     }
 
+    /// this function re-defines the velocity, color and neighbors of the starling based on the surroundings
     void flock() 
     {
       PVector alignment = getAverageDirection();
@@ -47,26 +57,26 @@ class Starling {
       PVector noise = new PVector((random(2) - 1)/2, (random(2) -1)/2);
       PVector cohese = getCohesion();
       
-      //if(!option_neighbor)
-      //{
-      //  alignment.mult(0);
-      //}
-      //if(!option_crowd)
-      //{
-      //  avoidCollision.mult(0);
-      //}
-      //if(!option_obstacle)
-      //{
-      //  oppositeObstacles.mult(0);
-      //}
-      //if(!option_noise)
-      //{
-      //  noise.mult(0);
-      //}
-      //if(!option_cohese)
-      //{
-      //  cohese.mult(0);
-      //}
+      if(!option_neighbor)
+      {
+        alignment.mult(0);
+      }
+      if(!option_crowd)
+      {
+        avoidCollision.mult(0);
+      }
+      if(!option_obstacle)
+      {
+        oppositeObstacles.mult(0);
+      }
+      if(!option_noise)
+      {
+        noise.mult(0);
+      }
+      if(!option_cohese)
+      {
+        cohese.mult(0);
+      }
       
       stroke(0, 255, 160);
 
@@ -89,7 +99,8 @@ class Starling {
       colorB += colors[2] * 0.02;
       colorB = ((colorB) % 255 + 255) % 255; 
     }
-
+    
+    /// updates the neighbors of the starling to those within a friendly radius
     void getNeighbors () 
     {
       ArrayList<Starling> near = new ArrayList<Starling>();
@@ -111,6 +122,7 @@ class Starling {
       System.out.println(neighbors.size());
     }
 
+    /// updates the color of the starling to approximately the average of the neighbors 
     float[] getAverageColor () 
     {
       float totalColorR = 0.0;
@@ -171,6 +183,7 @@ class Starling {
       }
     }
 
+    /// returns average direction vector of the neighbors normalized and inversely averaged with distance
     PVector getAverageDirection() 
     {
       PVector totalDirection = new PVector(0.0, 0.0);
@@ -191,90 +204,94 @@ class Starling {
       return totalDirection;
     }
 
-  PVector getAvoidCollision() 
-  {
-    PVector oppositeNeighbors = new PVector(0.0, 0.0);
-
-    for(Starling s : neighbors) 
+    /// returns average difference dispacement vector between this starling and the neighbors, normalized and inversely averaged with the distance
+    PVector getAvoidCollision() 
     {
-      float distance = PVector.dist(this.position, s.position);
-
-      if ((distance > 0) && (distance < crowdRadius)) 
-      {
-        PVector difference = PVector.sub(this.position, s.position);
-        difference.normalize();
-        difference.div(distance);
-        oppositeNeighbors.add(difference);
-      }
-    }
-    return oppositeNeighbors;
-  }
-
-  PVector getOppositeObstacles() 
-  {
-    PVector oppositeObstacles = new PVector(0.0, 0.0);
-      
-    for (Obstacle o : obstacles) 
-    {
-      float distance = PVector.dist(this.position, o.position);
-      if ((distance > 0) && (distance < obstacleRadius)) 
-      {
-        PVector difference = PVector.sub(this.position, o.position);
-        difference.normalize();
-        difference.div(distance);       
-        oppositeObstacles.add(difference);
-      }
-    }
-    return oppositeObstacles;
-  }
+      PVector oppositeNeighbors = new PVector(0.0, 0.0);
   
-  PVector getCohesion() 
-  {
-    PVector sum = new PVector(0.0, 0.0);   
-    int count = 0;
-
-    for(Starling s : neighbors) 
-    {
-      float distance = PVector.dist(this.position, s.position);
-      if ((distance > 0) && (distance < coheseRadius)) 
+      for(Starling s : neighbors) 
       {
-        sum.add(s.position); 
-        count++;
+        float distance = PVector.dist(this.position, s.position);
+  
+        if ((distance > 0) && (distance < crowdRadius)) 
+        {
+          PVector difference = PVector.sub(this.position, s.position);
+          difference.normalize();
+          difference.div(distance);
+          oppositeNeighbors.add(difference);
+        }
+      }
+      return oppositeNeighbors;
+    }
+
+    /// returns average opposite difference dispacement vector between this starling and the obstacles, normalized and inversely averaged with the distance
+    PVector getOppositeObstacles() 
+    {
+      PVector oppositeObstacles = new PVector(0.0, 0.0);
+        
+      for (Obstacle o : obstacles) 
+      {
+        float distance = PVector.dist(this.position, o.position);
+        if ((distance > 0) && (distance < obstacleRadius)) 
+        {
+          PVector difference = PVector.sub(this.position, o.position);
+          difference.normalize();
+          difference.div(distance);       
+          oppositeObstacles.add(difference);
+        }
+      }
+      return oppositeObstacles;
+    }
+  
+    /// returns the average cohesion vector between this starling and those that are within the cohesion radius
+    PVector getCohesion() 
+    {
+      PVector sum = new PVector(0.0, 0.0);   
+      int count = 0;
+  
+      for(Starling s : neighbors) 
+      {
+        float distance = PVector.dist(this.position, s.position);
+        if ((distance > 0) && (distance < coheseRadius)) 
+        {
+          sum.add(s.position); 
+          count++;
+        }
+      }
+  
+      if (count == 0) 
+      {
+        return new PVector(0.0, 0.0);
+      } 
+      else 
+      {
+        sum.div(count);
+        PVector required = PVector.sub(sum, this.position);  
+        return required.setMag(0.05);
       }
     }
 
-    if (count == 0) 
-    {
-      return new PVector(0.0, 0.0);
-    } 
-    else 
-    {
-      sum.div(count);
-      PVector required = PVector.sub(sum, this.position);  
-      return required.setMag(0.05);
-    }
-  }
-
+    /// pre-defined function that creates the visual apperance of the starling in the window
     void draw () 
     {
       int size = 1;
       for(int i=0; i<neighbors.size(); i++) 
       {
-          Starling s = neighbors.get(i);
-          stroke(90);
-          if(!option_lines)
-          {
-            line(this.position.x, this.position.y, s.position.x, s.position.y);
-          }
+        Starling s = neighbors.get(i);
+        stroke(90);
+        if(!option_lines)
+        {
+          line(this.position.x, this.position.y, s.position.x, s.position.y);
+        }
       }
-
+  
       if(select)
       {
-          size = 2;
+        size = 2;
       }
       else
       {
-          size = 1;
+        size = 1;
       }
 
       noStroke();
@@ -305,17 +322,13 @@ class Starling {
       popMatrix();
     }
 
-    void mouseOver() 
-    {
-      background(0, 0, 0);
-    }
-
-    // update all those timers!
+    /// this function runs every frame and updates the decide Timer
     void increment () 
     {
       decideTimer = (decideTimer + 1) % 5;
     }
 
+    /// wraps the starling position to allow it to move across the whole window
     void wrap () 
     {
       position.x = (position.x + width) % width;

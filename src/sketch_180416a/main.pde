@@ -2,39 +2,61 @@ import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 import javax.swing.JOptionPane;
 
+/// array of all the starings currently in view/actually present
 ArrayList<Starling> starlings;
+/// array of all the obstacles currently in view/actually present
 ArrayList<Obstacle> obstacles;
+/// the currently selected starling whose stats are being displayed on the top right
 Starling currentSelected = new Starling(0.0, 0.0);
 
+/// the scale of the starling dimensional size and its defining radii
 float scale = .8;
+/// the erasing radius in the erase mode
 float eraseRadius = 30;
+/// the current placeTool - can be starling, obstacle, eraser or select
 String placeTool = "Starlings";
 
+/// the average speed of the flock of the currently selected starling
 float averageSpeed = 0.0;
+/// the average direction of the flock of the currently selected starling
 double direction;
 
+/// maximum spped that the starlings can attain
 float maxSpeed = 1.6;;
+/// friendly radius that defines the proximity of the neighbors
 float neighborRadius = 40;
+/// the minimum crowding radius between the starlings
 float crowdRadius = 50;
+/// the minimum distance between the starlings and the obstacles
 float obstacleRadius = 100;
+/// the cohesion radius between the starlings 
 float coheseRadius = 40;
 
+/// toggling option to switch on/off the neighbor influence
 boolean option_neighbor = true;
+/// toggling option to switch on/off the crowd influence
 boolean option_crowd = true;
+/// toggling option to switch on/off the obstacle influence
 boolean option_obstacle = true;
+/// toggling option to switch on/off the noise
 boolean option_noise = true;
+/// toggling option to switch on/off the cohesion
 boolean option_cohese = true;
+/// toggling option to switch on/off the interaction lines
 boolean option_lines = true;
 
-// gui crap
+/// the message timer for displaying the stats and other relevant details
 int messageTimer = 0;
+/// the display message text string
 String messageText = "";
 
+/// sets the size of the processing window
 public void settings() 
 {
   size(1800, 900);
 }
 
+/// initializes the processing window with rectangular walls and random starlings
 void setup () 
 {
   textSize(16);
@@ -53,6 +75,7 @@ void setup ()
   setupWalls();
 }
 
+/// creates a new rectangular obstacle wall in the window
 void setupWalls() 
 {
   obstacles = new ArrayList<Obstacle>();
@@ -68,6 +91,7 @@ void setupWalls()
   }
 }
 
+/// creates a new multi-circular obstacle wall in the window
 void setupCircle() 
 {
   obstacles = new ArrayList<Obstacle>();
@@ -98,6 +122,7 @@ void setupCircle()
   } 
 }
 
+/// creates a new COP obstacle wall in the window
 void setupCourse()
 {
   obstacles = new ArrayList<Obstacle>();
@@ -122,6 +147,7 @@ void setupCourse()
   }
 }
 
+/// randomizes the position,color of all the starlings on the window
 void randomize()
 {
   for(int i=0; i<starlings.size(); i++)
@@ -129,9 +155,15 @@ void randomize()
     Starling j = starlings.get(i);
     j.position.x = random(width);
     j.position.y = random(height);
+    j.colorR = random(255);
+    j.colorG = random(255);
+    j.colorB = random(255);
+    j.velocity.x = random(maxSpeed/2) - maxSpeed/4;
+    j.velocity.y = random(maxSpeed/2) - maxSpeed/4;
   }
 }
 
+/// makes a wind flow with direction depending on the value of n
 void wind(int n)
 {
   if(n == 0)
@@ -168,6 +200,7 @@ void wind(int n)
   }
 }
 
+/// increasing or decresing the cohese
 void cohese(boolean direction)
 {
   if(direction)
@@ -180,6 +213,7 @@ void cohese(boolean direction)
   }
 }
 
+/// incresing or decresing the separation radius
 void separation(boolean direction)
 {
   if(direction)
@@ -192,6 +226,7 @@ void separation(boolean direction)
   }
 }
 
+/// displays the statistics in the top right corner of the window
 void display() 
 {
    averageSpeed = 0.0;
@@ -215,11 +250,13 @@ void display()
    direction = Math.atan(directionY/directionX);
 }
 
+/// displays the help section for the user
 void displayHelp()
 {
   JOptionPane.showMessageDialog(null,"HELP SECTION" + "\n" + "Q: Select Starlings at hand" + "\n" + "W: Select Rectangular Obstacles at Hand" + "\n" + "w: Select Circular Obstacles at Hand" + "\n" + "E: Select Eraser at hand" + "\n" + "R: Randomize the Starlings" + "\n" + "S: Select a Starling in this mode" + "\n" + "Z: Revelocity all Obstacles" + "\n" + "X: Revelocity all Starlings" + "\n" + "Up: Blow wind in the upward direction" + "\n" + "Down: Blow wind in the downward direction" + "\n" + "Left: Blow wind in the left direction" + "\n" + "Right: Blow wind in the right direction" + "\n" + "1: Toggle Interactions" + "\n" + "2: Decrease Cohesion Radius" + "\n" + "3: Toggle Obstacle Obstacleance" + "\n" + "4: Decrease Separation Radius" + "\n" + "5: Toggle Flock Alignment" + "\n" + "6: Increase Separation Radius" + "\n" + "7: Toggle Noise" + "\n" + "8: Increase Cohesion Radius" + "\n" + "9: Toggle Crowd Obstacleance" + ",: Rectangular Walls" + "\n" + ".: Circular Obstacles" + "\n" + "/: COP Wall" + "\n" + "-: Decrease Size of Starlings" + "\n" + "=: Increase size of Starlings" + "\n" + "Mouse Wheel: Change Max Speed");
 }
 
+/// describes the placeTool's visual appearance
 void draw() 
 {
   noStroke();
@@ -254,7 +291,6 @@ void draw()
   for (int i=0; i<obstacles.size(); i++) 
   {
     Obstacle current = obstacles.get(i);
-    current.go();
     current.draw();
   }
 
@@ -265,6 +301,7 @@ void draw()
   drawGUI();
 }
 
+/// checks the keyPressed and accounts for performing the appropriate action
 void keyPressed() 
 {
   if(key == CODED)
@@ -412,6 +449,7 @@ void keyPressed()
 
 }
 
+/// displays the info messages on the window
 void drawGUI() 
 {
    if(messageTimer > 0) 
@@ -431,16 +469,19 @@ void drawGUI()
    text("Press 'h' for help", width-350, 200);
 }
 
+/// returns the plural/singular "s"/"" based on count
 String s(int count) 
 {
   return (count != 1) ? "s" : "";
 }
 
+/// toggles on/off option's texts
 String on(boolean in) 
 {
   return in ? "on" : "off"; 
 }
 
+/// called when the mouse is pressed with a given place tool. performs the appropriate action
 void mousePressed () 
 {
   switch (placeTool) 
@@ -469,6 +510,7 @@ void mousePressed ()
    }
 }
 
+/// increase the maxSpeed on upward scrolling and decrease the maxSpeed on downward scrolling
 void mouseWheel(MouseEvent event) 
 {
   float e = event.getCount();
@@ -478,6 +520,7 @@ void mouseWheel(MouseEvent event)
   }
 }
 
+/// erases the starlings and voids within the eraseradius of the cursor
 void erase () 
 {
   for(int i=starlings.size()-1; i>-1; i--) 
@@ -498,6 +541,7 @@ void erase ()
   }
 }
 
+/// draw text on the window
 void drawText (String s, float x, float y) 
 {
   fill(0);
@@ -506,7 +550,7 @@ void drawText (String s, float x, float y)
   text(s, x-1, y-1);
 }
 
-
+/// set the message text and the message timer for display info and stats
 void message (String in) {
    messageText = in;
    messageTimer = (int) frameRate * 3;
