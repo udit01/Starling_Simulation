@@ -268,7 +268,7 @@ void draw()
   {
     noFill();
     stroke(0, 100, 200);
-    rect(mouseX - eraseRadius, mouseY - eraseRadius, eraseRadius * 2.5, eraseRadius * 2.5);
+    ellipse(mouseX, mouseY, eraseRadius * 2.5, eraseRadius * 2.5);
     if (mousePressed) 
     {
       erase();

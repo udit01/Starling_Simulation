@@ -294,11 +294,11 @@ class Starling {
         size = 1;
       }
 
-      noStroke();
       fill(colorR, colorG, colorB);
       pushMatrix();
       translate(position.x, position.y);
       rotate(velocity.heading());
+      stroke(0,0,360,35);
       beginShape();
       vertex(18.75 * scale * size, 0 * size);                     // A
       vertex(15 * scale * size, 3 * scale * size);                // B
