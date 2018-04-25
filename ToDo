@@ -1,24 +1,32 @@
 Power
-
-
 behavior of birs with wind direction
-
-
 show interaction with less starlings
-
-
 add border before adding new starlings
 
-
 mmatch ke with net
-
 seaparation effects - visible --r
-
 slider
-
 internal presssure > external pressure -- r
-
 difference between separation and cohesion radius
 observe and tell
-
 help section change order
+Seperation    -- use sliders / (rotating / linear)
+Cohesion    -- use sliders (rotating / linear)
+Alignment    -- use sliders (rotating / linear)
+
+Speed
+Adding boids(delete boids if possible -- based on caps lock?)
+Adding obstacles(delete obstacles)
+Reloading simulation
+Coloring according to speed
+Coloring according to group type
+Coloring according to direction
+Calculate/display kinetic energy statically/dynamically
+Display average velocity of groups/global statically/dynamically
+Display average acceleration of groups/global statically/dynamically
+Add/display Drag
+Add/display Wind
+Energy is very high ? Then it’s not possible and something else .
+Does your simulation reflect reality ?
+How does it reflect reality ?
+
