@@ -203,7 +203,7 @@ Simulation is used in many contexts, such as simulation of technology for perfor
 \\
 Key issues in simulation include acquisition of valid source information about the relevant selection of key characteristics and behaviours, the use of simplifying approximations and assumptions within the simulation, and fidelity and validity of the simulation outcomes. Procedures and protocols for model verification and validation are an ongoing field of academic study, refinement, research and development in simulations technology or practice, particularly in the field of computer simulation.
 
-\subsection{What's a simulation ?}
+\subsection{What's a Computer Simulation ?}
 
 A computer simulation (or "sim") is an attempt to model a real-life or hypothetical situation on a computer so that it can be studied to see how the system works. By changing variables in the simulation, predictions may be made about the behaviour of the system. It is a tool to virtually investigate the behaviour of the system under study.
 \\
@@ -212,8 +212,26 @@ Computer simulation has become a useful part of modeling many natural systems in
 Traditionally, the formal modeling of systems has been via a mathematical model, which attempts to find analytical solutions enabling the prediction of the behaviour of the system from a set of parameters and initial conditions. Computer simulation is often used as an adjunct to, or substitution for, modeling systems for which simple closed form analytic solutions are not possible. There are many different types of computer simulation, the common feature they all share is the attempt to generate a sample of representative scenarios for a model in which a complete enumeration of all possible states would be prohibitive or impossible.
 \\
 Several software packages exist for running computer-based simulation modeling (e.g. Monte Carlo simulation, stochastic modeling, multimethod modeling) that makes all the modeling almost effortless.
-\\
 Modern usage of the term "computer simulation" may encompass virtually any computer-based representation.
+
+\section{Input Output to simulations}
+
+\subsection{Input}
+\begin{itemize}
+  \item Body Tracking.
+  \item Physical Controllers.
+  \item Sound Recognition
+\end{itemize}
+
+\subsection{Output}
+\begin{itemize}
+  \item Visual display
+  \item Aural display
+  \item Haptic display
+  \item Vestibular display
+\end{itemize}
+
+So in our starling simluation we are taking interactive user input {Physical Contoller : Keyboard and Mouse} and computing dynamically the parameters and enviroment changes, then showing results {Like starling speed, energy-expenditure, Friend circl etc} directly to the user.  
 
 \section{Types of Simulation}
 \subsection{Key Aspects}
@@ -244,14 +262,45 @@ The rules applied in the simplest Boids world are as follows:
 
 \section{Additional Behaviour}
 
-More complex rules can be added, such as obstacle avoidance and goal seeking .\\
+More complex rules can be added, such as:-
+
+\begin{itemize}
+  \item Obstacle avoidance: Avoiding the obstackles
+  \item Goal Seeking: Starlings actively move towards a specifically designed object and after reaching there, do a predefined behavior like encirclement.
+  \item Alone Behaviour : What does a starling do when it's alone, and not part of a group.
+  \item Wind Behaviour : What do the starlings do as a group when the wind blows in a particular direction.
+  \item Speed Regulation : The speed of starlings should be regulated as a group.
+\end{itemize}
+
+\\
 
 \chapter{Environment Parameters}
-\section{Parameters}
-Press H for the full helpful Legend.
+\section{Parameters varied in Software}
+Here is a list of parameters which we have dynamically varied in out simlulation.
+\begin{itemize}
+  \item Placing Obstacles : Circular, Rectangular.
+  \item Placing Starlings : Place Single or as a Batch. At a point or randomized .
+  \item Removal : Erasing the unwanted starlings and obstacles, part by part or as a whole group by certain key presses . 
+  \item Selection : Selecting a starling to observe it's dynamic group parameters like Speed, Kinetic Energy, Friends in group. 
+  \item Graph : We can view the connections in a graph , an edge representing that two starlings are friends.
+  \item Interactions : We can toggle the interactions between the starling to see the results of graph.
+  \item Wind Simulation : Add wind in a particular direction and observe how the starlings fly with/against the wind, in the flock/alone.
+  \item Obstacle Avoidance : We can toggle obstacle avoidance on or off and according to it , starlings will pay heed to the obstacles .
+  \item Alignment : We can toggle flock alignment on or off and according to it , starlings will run streamlined or randomly.
+  \item Noise : We can toggle noise on or off and according to it , starlings will run with some randomeness or completly in harmony.
+  \item Cohesion Radius : We can mannualy vary the cohesion radius in between the starlings and see what effect does it have on the intra and inter group distance and other starling realtions.
+  \item Seperation Radius : We can mannualy vary the seperation radius in between the starlings and see what effect does it have on the intra and inter group distance and other starling realtions.
+  \item Speed : Changing the max speed capacity of starlings, and observing at what flock conditions is it reached.
+\end{itemize}
 \\
-Wind speed,
+Note :- Press H to get exact keys and full Legend in the Software.
+
+
 \section{Observations}
+
+\begin{itemize}
+  \item A starling alone cannot reach the maximum speed capacity and in real starling groups this is often the case.
+\end{itemize}
 
 \chapter{Processing Software}
 \section{How does it work?}
@@ -259,7 +308,7 @@ How does it work ? How does it handle threading ?
 Explicit / Implicit / Automatic multi threading ? Arduion loops ?
 
 \chapter{Conclusion}
-
+After this simulation we learn a lot about starling behaviour and had the chance to observe different behaviour of starlings in different environments.
 
 % \begin{thebibliography}{9}
 
