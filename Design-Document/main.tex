@@ -7,10 +7,17 @@
 \usepackage{graphicx}
 \usepackage{multicol}
 \usepackage[document]{ragged2e}
-
 \usepackage{fancyhdr}
 % \usepackage[]{classicthesis}
-
+\usepackage{hyperref}
+\hypersetup{
+  colorlinks   = true,    % Colours links instead of ugly boxes
+  urlcolor     = blue,    % Colour for external hyperlinks
+  linkcolor    = blue,    % Colour of internal links
+  citecolor    = red      % Colour of citations
+  }
+% \usepackage{cref}
+  
 \def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
 \let\endchangemargin=\endlist 
 
@@ -36,15 +43,10 @@
 \vspace{0.8cm}
 \large{\textbf{Design Practices in Computer Science}}\\[5pt]
 \large{\textbf{COP290}}\\[5pt]
-% \large{\textbf{Mathematical Model}}\\[5pt]
-%by \\
+
 \vspace{0.5cm}
 
 \large{\textbf{Starling Simulation }}
-% \large{\textbf{\\to understand the Flocking behaviour of birds}}\\[5pt]
-
-
-%\vspace{1in}
 
 \begin{center}
 \includegraphics[height=5cm]{iitd.eps}
@@ -57,7 +59,6 @@
 
 
 \vspace{1.5cm}
-
 
 \begin{multicols*}{2}
 
@@ -88,8 +89,6 @@
 \end{center}
 
 \newpage
-
-
 
 \begin{center}
 \Large \bf ABSTRACT
@@ -134,7 +133,6 @@ Future scope of the problem may include:
 
 \vspace{0.5cm}
 
-
 In this design project, we shall work as observers, developers and algorithm enthusiasts to understand the ways and finding different means to approach and tackle the objectives in a more well defined mathematical way. 
 
 \vspace{0.2cm}
@@ -157,10 +155,71 @@ ference. The name ”boid” corresponds to a shortened version of ”bird-oid
 object”, which refers to a bird-like object.
 
 \vspace{1cm}
-
 As with most artificial life simulations, Boids is an example of emergent
-behavior; that is, the complexity of Boids arises from the interaction of in-
-dividual agents (the boids, in this case) adhering to a set of simple rules.
+behavior; that is, the complexity of Boids arises from the interaction of individual agents (the boids, in this case) adhering to a set of simple rules.
+
+\hyperref[sec:baseline]{Baseline Rules}
+% \cref{sec:baseline}
+% {Basic Rules}
+
+\vspace{0.5cm}
+
+The following objectives are aimed to be discussed in this paper:
+\begin{itemize}
+  \item
+  Defining the problem.
+  % Support you design decisions ? 
+  \item
+  Discussing how a simulation is modeled, what are the diffrent padigrams.
+  % Discreet even simulation, Mutex and Tsigma force . screen Process Interaction, Interprocess Simulation, 
+  % logical time (when equal to) real time, for loop(not giving perefrence to one starlilng) concurrency (Showing it is equal because all threads have to access each other's memory, locking problem ?) ? repeated ? ||| Bound on number of starlings ? Experimenation with hyperparameters ?
+  % Changing according to some hyper-parameters ? 
+  \item
+  What set of rules govern bird in flocks.
+  % Power, drag, float force, Can birds sustain that ? Do we limit 
+  \item
+  What model is to be adopted for interplay of starlings with the environment.
+  \item
+  What parameters can be varied to see interesting patterns.
+  % (dynamic and average) power, KE . Energy expenditure, food ? , seperation radius, alignment etc
+  \item
+  Intresting Obeservations on varying diffrent parameters in simulation.
+  % Lone bird cannot reach max speed
+  % 
+\end{itemize}
+
+\chapter{Defining the problem}
+\section{Introduction}
+\subsection{Why do we care about bird flocking patterns ?}
+\section{How do we study them ?}
+
+\chapter{Modelling a Simulation}
+\section{Introduction}
+Simulation is the imitation of the operation of a real-world process or system. The act of simulating something first requires that a model be developed; this model represents the key characteristics, behaviors and functions of the selected physical or abstract system or process. The model represents the system itself, whereas the simulation represents the operation of the system over time.
+\\
+Simulation is used in many contexts, such as simulation of technology for performance optimization, safety engineering, testing, training, education, and video games. Often, computer experiments are used to study simulation models. Simulation is also used with scientific modelling of natural systems or human systems to gain insight into their functioning, as in economics. Simulation can be used to show the eventual real effects of alternative conditions and courses of action. Simulation is also used when the real system cannot be engaged, because it may not be accessible, or it may be dangerous or unacceptable to engage, or it is being designed but not yet built, or it may simply not exist.
+\\
+Key issues in simulation include acquisition of valid source information about the relevant selection of key characteristics and behaviours, the use of simplifying approximations and assumptions within the simulation, and fidelity and validity of the simulation outcomes. Procedures and protocols for model verification and validation are an ongoing field of academic study, refinement, research and development in simulations technology or practice, particularly in the field of computer simulation.
+
+\subsection{What's a simulation ?}
+
+A computer simulation (or "sim") is an attempt to model a real-life or hypothetical situation on a computer so that it can be studied to see how the system works. By changing variables in the simulation, predictions may be made about the behaviour of the system. It is a tool to virtually investigate the behaviour of the system under study.
+\\
+Computer simulation has become a useful part of modeling many natural systems in physics, chemistry and biology, and human systems in economics and social science (e.g., computational sociology) as well as in engineering to gain insight into the operation of those systems. A good example of the usefulness of using computers to simulate can be found in the field of network traffic simulation. In such simulations, the model behaviour will change each simulation according to the set of initial parameters assumed for the environment.
+\\
+Traditionally, the formal modeling of systems has been via a mathematical model, which attempts to find analytical solutions enabling the prediction of the behaviour of the system from a set of parameters and initial conditions. Computer simulation is often used as an adjunct to, or substitution for, modeling systems for which simple closed form analytic solutions are not possible. There are many different types of computer simulation, the common feature they all share is the attempt to generate a sample of representative scenarios for a model in which a complete enumeration of all possible states would be prohibitive or impossible.
+\\
+Several software packages exist for running computer-based simulation modeling (e.g. Monte Carlo simulation, stochastic modeling, multimethod modeling) that makes all the modeling almost effortless.
+\\
+Modern usage of the term "computer simulation" may encompass virtually any computer-based representation.
+
+\section{Types of Simulation}
+\subsection{Key Aspects}
+
+\chapter{Flocking Rules}
+\section{Baseline}
+\label{sec:baseline}
+
 The rules applied in the simplest Boids world are as follows:
 
 \begin{itemize}
@@ -181,44 +240,13 @@ The rules applied in the simplest Boids world are as follows:
   \end{center}
 \end{itemize}
 
-\vspace{0.5cm}
+\section{Additional Behaviour}
+
 More complex rules can be added, such as obstacle avoidance and goal seeking .\\
 
-\vspace{0.5cm}
-
-The following objectives are aimed to be discussed in this paper:
-\begin{itemize}
-  \item
-  Defining the problem.
-  % Support you design decisions ? 
-  \item
-  Discussing how a simulation is modeled, what are the diffrent padigrams.
-  % logical time (when equal to) real time, for loop(not giving perefrence to one starlilng) concurrency (Showing it is equal because all threads have to access each other's memory, locking problem ?) ? repeated ? ||| Bound on number of starlings ? Experimenation with hyperparameters ?
-  % Changing according to some hyper-parameters ? 
-
-  \item
-  What set of rules govern bird in flocks.
-  % Power, drag, float force, Can birds sustain that ? Do we limit 
-  \item
-  What model is to be adopted for interplay of starlings with the environment.
-  \item
-  What parameters can be varied to see interesting patterns.
-  % (dynamic and average) power, KE . Energy expenditure, food ? , 
-  \item
-  Intresting Obeservations on varying diffrent parameters in simulation.
-\end{itemize}
-
-\chapter{Defining the problem}
-\secion{Introduction}
-\subsection{Why do we care about bird flocking patterns ?}
-\secion{How do we study them ?}
-
-\chapter{Modelling a Simulation}
-\secion{Introduction}
-\subsection{What's a simulation ?}
-\secion{Types of Simulation}
-\subsection{Key Aspects}
-
+\chapter{Environment Parameters}
+\section{Parameters}
+\section{Observations}
 
 \chapter{Conclusion}
 
